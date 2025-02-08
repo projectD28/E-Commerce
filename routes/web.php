@@ -26,7 +26,7 @@ Route::post('/cart', [OrdersController::class, 'ChartProduct']);
 Route::post('/cart_delete', [OrdersController::class, 'ActionDelete']);
 Route::get('/total_item/{id}', [OrdersController::class, 'CountQtyProduct']);
 
-Route::get('/checkout{id}', [OrdersController::class, 'PageCheckout']);
+Route::get('/checkout/{id}', [OrdersController::class, 'PageCheckout']);
 Route::post('/checkout_proses', [OrdersController::class, 'Checkout']);
 
 Route::prefix('admin')->group(function () {

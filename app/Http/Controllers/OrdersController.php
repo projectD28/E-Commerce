@@ -62,7 +62,6 @@ class OrdersController extends Controller
 
     public function PageCheckout($userid)
     {
-        dd($userid);
         $CartCheckout = $this->ServiceOrder->Cart()->with("product")->where("user_id", $userid)->get();
 
         return view("page.checkout.checkout", compact("CartCheckout"));

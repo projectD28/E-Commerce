@@ -1,5 +1,5 @@
 @extends('page.index')
-@section('content')
+@section('content-product')
 <<div class="container py-5">
     <h2 class="mb-4 text-center">Checkout</h2>
 
@@ -30,7 +30,6 @@
                         <label for="payment" class="form-label">Payment Method</label>
                         <select class="form-select" id="payment" name="payment" required>
                             <option value="credit_card">Credit Card</option>
-                            <option value="paypal">PayPal</option>
                             <option value="cod">Cash on Delivery</option>
                         </select>
                     </div>
@@ -46,19 +45,35 @@
                     <tbody>
                         @foreach ($CartCheckout as $item)
                         <tr>
-                            <td><img src="{{ asset('storage/'.$item->product->url_image) }}" class="product-img me-2"></td>
+                            <td><img width="50" src="{{ asset('storage/'.$item->product->url_image) }}" class="product-img me-2"></td>
                             <td>{{ $item->product->name_product }}</td>
                             <td>{{ $item->qty }}x</td>
-                            <td>${{ number_format($item->product->price * $item->qty, 2) }}</td>
+                            <td>Rp. <input class="subtotal" type="text" style="border: none" value="{{ number_format($item->product->price * $item->qty, 2) }}"></td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
                 <hr>
-                <h5 class="text-end">Total: <strong>${{ number_format($total_price, 2) }}</strong></h5>
+                <h5 class="text-end">Total: <strong class="Total"></strong></h5>
                 <button type="submit" class="btn btn-success w-100 mt-3">Place Order</button>
             </div>
         </div>
     </div>
 </div>
 @endsection
+@push('scripts')
+<script>
+    updateTotalPrice()
+    function updateTotalPrice() {
+        let PriceTotal = 0;
+        $(".subtotal").each(function () {
+            let subTotalValue = $(this).val().replace(/,/g, '');
+            if (subTotalValue) {
+                PriceTotal += Number(subTotalValue);
+            }
+        });
+
+        $(".Total").html(PriceTotal.toLocaleString());
+    }
+</script>
+@endpush
