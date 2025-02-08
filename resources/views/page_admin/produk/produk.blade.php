@@ -15,14 +15,13 @@
     @endif
     <h4>Daftar Produk</h4>
 
-    <a type="button" href="/tambah_produk" class="btn btn-primary mt-2 mb-2">Tambah Produk</a>
+    <a type="button" href="/admin/tambah_produk" class="btn btn-primary mt-2 mb-2">Tambah Produk</a>
 
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Nama Produk</th>
-                <th>Kategori</th>
                 <th>Jumlah</th>
                 <th>Harga</th>
                 <th>Gambar</th>
@@ -34,13 +33,17 @@
                 <tr>
                     <td>{{$product->id}}</td>
                     <td>{{$product->name_product}}</td>
-                    <td>{{$product->category->name_category}}</td>
                     <td>{{$product->qty}}</td>
-                    <td>{{$product->price}}</td>
-                    <td><img src="{{asset('storage/'.$product->url_image)}}" ></td>
+                    <td>Rp. {{number_format($product->price)}}</td>
+                    <td><img src="{{asset('storage/'.$product->url_image)}}" width="200"></td>
                     <td>
-                        <a href="/ubah_produk/{{$product->id}}" class="btn btn-warning btn-sm">Edit</a>
-                        <button class="btn btn-danger btn-sm">Hapus</button>
+                        <a href="/admin/ubah_produk/{{$product->id}}" class="btn btn-warning btn-sm" >Edit</a>
+                        <form method="POST" action="/admin/action_delete">
+                            @csrf
+                            @method("delete")
+                            <input type="hidden" value="{{$product->id}}" name="id">
+                            <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                        </form>
                     </td>
                 </tr>
             @endforeach

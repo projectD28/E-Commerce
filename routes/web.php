@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
@@ -18,12 +19,25 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [PageController::class, 'index']);
+Route::get('/detail_produk/{id}', [PageController::class, 'DetailProduk']);
 
-Route::get('/admin_produk', [ProdukController::class, 'index'])->name('dashboard');
-Route::get('/tambah_produk', [ProdukController::class, 'PageTambahProduk']);
-Route::post('/action_tambah_produk', [ProdukController::class, 'Store']);
-Route::get('/ubah_produk/{id}', [ProdukController::class, 'PageUbahProduk']);
-Route::put('/action_ubah_produk/{id}', [ProdukController::class, 'Edit']);
+Route::get('/show_cart/{id}', [OrdersController::class, 'ShowCart']);
+Route::post('/cart', [OrdersController::class, 'ChartProduct']);
+Route::post('/cart_delete', [OrdersController::class, 'ActionDelete']);
+Route::get('/total_item/{id}', [OrdersController::class, 'CountQtyProduct']);
+
+Route::get('/checkout{id}', [OrdersController::class, 'PageCheckout']);
+Route::post('/checkout_proses', [OrdersController::class, 'Checkout']);
+
+Route::prefix('admin')->group(function () {
+    Route::get('/daftar_produk', [ProdukController::class, 'index']);
+    Route::get('/tambah_produk', [ProdukController::class, 'PageTambahProduk']);
+    Route::post('/action_tambah_produk', [ProdukController::class, 'Store']);
+    Route::get('/ubah_produk/{id}', [ProdukController::class, 'PageUbahProduk']);
+    Route::put('/action_ubah_produk/{id}', [ProdukController::class, 'Edit']);
+    Route::delete('/action_delete', [ProdukController::class, 'Delete']);
+});
+
 // Route::get('/dashboard', [Dashboard::class, 'Dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
