@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,13 +16,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', [PageController::class, 'index']);
+
+Route::get('/admin_produk', [ProdukController::class, 'index'])->name('dashboard');
+Route::get('/tambah_produk', [ProdukController::class, 'PageTambahProduk']);
+Route::post('/action_tambah_produk', [ProdukController::class, 'Store']);
+Route::get('/ubah_produk/{id}', [ProdukController::class, 'PageUbahProduk']);
+Route::put('/action_ubah_produk/{id}', [ProdukController::class, 'Edit']);
+// Route::get('/dashboard', [Dashboard::class, 'Dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -28,4 +32,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
