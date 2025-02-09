@@ -7,6 +7,7 @@ use App\Models\OrderDetails;
 use App\Models\Orders;
 use App\Models\Products;
 use App\Service\Order\OrderInterface;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\UploadedFile;
 use Ramsey\Uuid\Uuid;
@@ -55,19 +56,36 @@ class OrderService implements OrderInterface
 
     public function Checkout($request)
     {
-        // DB::transaction(function () use ($request) {
-        //     $id = $request->input('id');
-        //     $price = $request->input("'price");
-        //     $qty = $request->input("qty");
-        //     $total = $request->input("subtotal");
+        DB::transaction(function () use ($request) {
 
-        //     $order = $this->Order()->where('id',)
+            $order = $this->Order()->create([
+                "user_id" => $request->id,
+                "name" => $request->fullname,
+                "email" => $request->email,
+                "address" => $request->address,
+                "phone" => $request->phone,
+                "payment_method" => $request->payment,
+                "date_order" => Carbon::now(),
+                "total_price" => $request->total_price,
+                "status" => "Order",
+            ]);
 
-        //     for ($i = 0; $i < count($id); $i++) {
+            $cart = $this->Cart()->with("product")->where("user_id", $request->id)->get();
 
-        //     }
-        //     dd($request->input('id'));
-        //     // $this->Order()->
-        // });
+
+            foreach ($cart as $key => $value) {
+                $subtotal = $value->qty * $value->product->price;
+                $uniteprice = $value->product->price;
+                $this->OrderList()->create([
+                    'order_id' => $order->id,
+                    'product_id' => $value->product_id,
+                    'qty' => $value->qty,
+                    'unit_price' => $uniteprice,
+                    'subtotal' => $subtotal
+                ]);
+
+                $value->delete();
+            }
+        });
     }
 }

@@ -17,7 +17,7 @@ class OrderDetails extends Model
         'order_id',
         'product_id',
         'qty',
-        'unite_price',
+        'unit_price',
         'subtotal'
     ];
 }

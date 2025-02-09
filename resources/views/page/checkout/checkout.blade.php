@@ -1,15 +1,16 @@
 @extends('page.index')
 @section('content-product')
-<<div class="container py-5">
+<div class="container py-5">
     <h2 class="mb-4 text-center">Checkout</h2>
 
+    <form action="/checkout_process" method="POST">
+        @csrf
     <div class="row">
         <!-- Formulir Checkout -->
         <div class="col-md-7">
             <div class="card p-4">
                 <h4 class="mb-3">Billing Details</h4>
-                <form action="/checkout_process" method="POST">
-                    @csrf
+                    <input type="hidden" name="id" value="{{$userid}}">
                     <div class="mb-3">
                         <label for="fullname" class="form-label">Full Name</label>
                         <input type="text" class="form-control" id="fullname" name="fullname" required>
@@ -33,7 +34,7 @@
                             <option value="cod">Cash on Delivery</option>
                         </select>
                     </div>
-                </form>
+
             </div>
         </div>
 
@@ -55,10 +56,12 @@
                 </table>
                 <hr>
                 <h5 class="text-end">Total: <strong class="Total"></strong></h5>
+                <input type="hidden" name="total_price" class="TotalPrice">
                 <button type="submit" class="btn btn-success w-100 mt-3">Place Order</button>
             </div>
         </div>
     </div>
+    </form>
 </div>
 @endsection
 @push('scripts')
@@ -74,6 +77,7 @@
         });
 
         $(".Total").html(PriceTotal.toLocaleString());
+        $(".TotalPrice").val(PriceTotal);
     }
 </script>
 @endpush

@@ -27,7 +27,7 @@ Route::post('/cart_delete', [OrdersController::class, 'ActionDelete']);
 Route::get('/total_item/{id}', [OrdersController::class, 'CountQtyProduct']);
 
 Route::get('/checkout/{id}', [OrdersController::class, 'PageCheckout']);
-Route::post('/checkout_proses', [OrdersController::class, 'Checkout']);
+Route::post('/checkout_process', [OrdersController::class, 'Checkout']);
 
 Route::prefix('admin')->group(function () {
     Route::get('/daftar_produk', [ProdukController::class, 'index']);

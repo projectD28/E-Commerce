@@ -64,29 +64,26 @@ class OrdersController extends Controller
     {
         $CartCheckout = $this->ServiceOrder->Cart()->with("product")->where("user_id", $userid)->get();
 
-        return view("page.checkout.checkout", compact("CartCheckout"));
+        return view("page.checkout.checkout", compact("CartCheckout", "userid"));
     }
 
     public function Checkout(Request $request)
     {
         try {
             $request->validate([
-                "id" => "required|array",
-                "id*" => "required|string",
-                "price" => "required|array",
-                "price*" => "required|string",
-                "qty" => "required|array",
-                "qty*" => "required|string",
-                "subtotal" => "required|array",
-                "subtotal*" => "required|string",
+                "id" => "required|numeric",
+                'fullname' => "required|string",
+                'phone' => "required|string",
+                'address' => "required|string",
+                'payment' => "required|string",
+                "total_price" => "required|numeric"
             ]);
-
             $this->ServiceOrder->Checkout($request);
 
-            return redirect('/');
+            return redirect('/')->with("success", "Order berhasil");
         } catch (\Throwable $th) {
-            return redirect('/');
             Log::info($th);
+            return redirect('/')->with("error", $th->getMessage());
         }
     }
 }

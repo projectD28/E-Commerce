@@ -20,9 +20,6 @@
         <header class="mb-4 d-flex justify-content-between align-items-center">
             <h1 class="text-center">Product Catalog</h1>
             <div>
-                <button class="btn btn-outline-primary me-2">
-                    <i class="bi bi-person"></i> Login
-                </button>
                 <a href="/show_cart/1" class="btn btn-outline-primary position-relative">
                     <i class="bi bi-cart-fill"></i> Cart
 
@@ -32,6 +29,12 @@
                 </a>
             </div>
         </header>
+        @if ($message = Session::get("success"))
+    <div class="alert alert-primary" role="alert">
+        {{$message}}
+      </div>
+
+    @endif
         @yield('content-product')
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
